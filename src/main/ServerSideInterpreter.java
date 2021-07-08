@@ -59,9 +59,9 @@ public class ServerSideInterpreter {
 			background.setBackground(Color.DARK_GRAY);
 			
 			Dock d = new Dock(viewDimension.X, viewDimension.Y, viewDimension.WIDTH, viewDimension.HEIGHT, docklib);
-			
-			WindowAllocator.addWindow(d.dock);
-			WindowAllocator.addWindow(background);
+
+			WindowAllocator.addWindow(background, 0);
+			WindowAllocator.addWindow(d.dock, 300);
 			WindowAllocator.refresh();
 			return "SERVER:OK";
 		}catch(Exception e) {
