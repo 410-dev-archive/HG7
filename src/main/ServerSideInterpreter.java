@@ -3,12 +3,14 @@ package main;
 import java.awt.Color;
 
 import IO.SocketIO;
+import data.AlertData;
 import data.ViewDimension;
-import data.WindowData;
+import uicomponents.Alert;
 import uicomponents.Dock;
 import uiobjects.GenericWindow;
 
 public class ServerSideInterpreter {
+	
 	public static String requestInterpreter(String input) throws Exception {
 		if (input.equals("exit")) {
 			SocketIO.shouldClose = true;
@@ -16,6 +18,7 @@ public class ServerSideInterpreter {
 		}else if (input.startsWith("start")) {
 			input = input.replace("start ", "");
 			input = input.replace("start", "");
+			if (WindowAllocator.mainWindowGenerated) return "SERVER:NOT_OK:Main Window is already generated.";
 			try {
 				Main.start(input.split(" "));
 				return "SERVER:OK";
@@ -47,8 +50,15 @@ public class ServerSideInterpreter {
 		}
 	}
 	
-	private static String makeAlert(String windata) {
-		return "";
+	private static String makeAlert(String jsonIn) {
+		try {
+			AlertData alertData = new AlertData(jsonIn);
+			Alert a = new Alert(alertData);
+			WindowAllocator.addWindow(a.alert);
+			return "SERVER:OK";
+		}catch(Exception e) {
+			return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e).replace("\n", "") + "}";
+		}
 	}
 	
 	private static String makeDock(String docklib) {
