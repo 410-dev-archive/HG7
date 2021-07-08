@@ -14,6 +14,7 @@ public class ServerSideInterpreter {
 			SocketIO.shouldClose = true;
 			return "SERVER:EXIT";
 		}else if (input.startsWith("start")) {
+			input = input.replace("start ", "");
 			input = input.replace("start", "");
 			try {
 				Main.start(input.split(" "));
