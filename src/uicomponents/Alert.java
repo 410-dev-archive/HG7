@@ -13,6 +13,7 @@ import IO.SocketIO;
 import data.AlertData;
 import data.ButtonData;
 import data.ViewDimension;
+import main.Logger;
 import main.WindowAllocator;
 import main.WindowPositioner;
 import uiobjects.GenericWindow;
@@ -35,9 +36,11 @@ public class Alert {
 		JLabel titleText = new JLabel();
 		titleText.setText(data.title);
 		
-		
+		Logger.info("Adding button...");
 		for(ButtonData buttonData : data.buttons) {
 			JButton button = new JButton();
+			Logger.info("Button: " + buttonData.text);
+			Logger.info("Button Action: " + buttonData.onClickCommand);
 			button.setText(buttonData.text);
 			button.addActionListener(new ActionListener() {
 			    @Override
@@ -45,6 +48,8 @@ public class Alert {
 			        SocketIO.sendMessageToClient("ButtonEvent_" + data.parentID + ":" + buttonData.onClickCommand);
 			    }
 			});
+			button.setVisible(true);
+			alert.add(button);
 		}
 		
 		alert.add(content);
