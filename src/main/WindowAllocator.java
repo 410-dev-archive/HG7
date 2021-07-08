@@ -21,6 +21,7 @@ public class WindowAllocator {
 	private static ArrayList<Component> innerContents = new ArrayList<>();
 	private static ArrayList<Long> innerContentsPID = new ArrayList<>();
 	
+	public static boolean mainWindowGenerated = false;
 	
 	public static void createObjects(int x, int y, int screenWidth, int screenHeight) {
 		mainScreen = new Screen(x, y, screenWidth, screenHeight, "HG7Server");
@@ -28,6 +29,7 @@ public class WindowAllocator {
 		layer.setBounds(x, y, screenWidth, screenHeight);
 		mainScreen.setLayout(null);
 		mainScreen.add(layer);
+		mainWindowGenerated = true;
 		Logger.info("Created main screen.");
 	}
 	
@@ -86,6 +88,7 @@ public class WindowAllocator {
 		layer = null;
 		mainScreen.setVisible(false);
 		mainScreen = null;
+		mainWindowGenerated = false;
 	}
 	
 	public static void show() {
