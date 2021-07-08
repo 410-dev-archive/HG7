@@ -72,7 +72,15 @@ public class WindowAllocator {
 	}
 	
 	public static void refresh() {
-		SwingUtilities.updateComponentTreeUI(mainScreen);
+		if (mainScreen != null) SwingUtilities.updateComponentTreeUI(mainScreen);
+	}
+	
+	public static void closeFrame() {
+		innerContents.clear();
+		innerContentsPID.clear();
+		contentPane = null;
+		mainScreen.setVisible(false);
+		mainScreen = null;
 	}
 	
 	public static void show() {
