@@ -24,32 +24,25 @@ public class ServerSideInterpreter {
 			}
 		}else if (input.startsWith("dock ")) {
 			input = input.replace("dock ", "");
-			try {
-				return makeDock(input);
-			}catch(Exception e) {
-				Logger.writeExceptionLog(e, "interpreter.<start>");
-				return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e) + "}";
-			}
+			return makeDock(input);
 		}else if (input.startsWith("alert ")) {
 			input = input.replace("alert ", "");
-			try {
-				return makeAlert(input);
-			}catch(Exception e) {
-				Logger.writeExceptionLog(e, "interpreter.<start>");
-				return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e) + "}";
-			}
+			return makeAlert(input);
 		}else if (input.equals("uisvreboot")) {
-			try {
-				ViewDimension origd = WindowAllocator.getScreenDimension();
-				
-				Main.start(new String[] {origd.WIDTH + "", origd.HEIGHT + ""});
-				return "SERVER:OK";
-			}catch(Exception e) {
-				Logger.writeExceptionLog(e, "interpreter.<start>");
-				return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e) + "}";
-			}
+			return uiReboot();
 		}else {
 			return "SERVER:INTERPRETER_FAILED";
+		}
+	}
+	
+	private static String uiReboot() {
+		try {
+			ViewDimension origd = WindowAllocator.getScreenDimension();
+			WindowAllocator.closeFrame();
+			Main.start(new String[] {origd.WIDTH + "", origd.HEIGHT + ""});
+			return "SERVER:OK";
+		}catch(Exception e) {
+			return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e) + "}";
 		}
 	}
 	
