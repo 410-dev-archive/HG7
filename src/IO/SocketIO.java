@@ -9,8 +9,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+import main.ClientSideInterpreter;
 import main.Logger;
 import main.Main;
+import main.ServerSideInterpreter;
 
 public class SocketIO {
 	
@@ -33,7 +35,7 @@ public class SocketIO {
             Logger.info("Client sent: " + recv);
             OutputStream out = socketUser.getOutputStream();
             PrintWriter writer = new PrintWriter(out, true);
-            String interpreted = Main.interpreter(recv);
+            String interpreted = ServerSideInterpreter.requestInterpreter(recv);
     	    writer.println(interpreted);
     	    if (interpreted.equals("SERVER:EXIT")) {
     	    	shouldClose = true;
@@ -80,7 +82,7 @@ public class SocketIO {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 		String response = reader.readLine();
 		Logger.info("Server responded: " + response);
-		Main.serverResponseInterpreter(response);
+		ClientSideInterpreter.responseInterpreter(response);
 		
 		socket.close();
 	}
@@ -100,7 +102,7 @@ public class SocketIO {
 							System.exit(9);
 						}
 						Logger.info("RTServer sent: " + in);
-						Main.serverSignalInterpreter(in);
+						ClientSideInterpreter.requestInterpreter(in);
 						this.sleep(100);
 					}
 				}catch(Exception e) {
