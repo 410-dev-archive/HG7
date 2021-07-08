@@ -120,6 +120,7 @@ class DockElement extends JPanel {
     	icon.setSize(iconDimension, iconDimension);
     	this.add(icon);
     	Logger.info("Icon loaded.");
+    	this.setBackground(dockBackground);
     	this.repaint();
     	this.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent e) {
