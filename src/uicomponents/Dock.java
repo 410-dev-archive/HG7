@@ -43,10 +43,10 @@ public class Dock {
 		ID = DockItemsDatabaseLocation + "id.data";
 		Executions = DockItemsDatabaseLocation + "exec.data";
 		
-		int dockWidth = (int) (parentScreenWidth * widthRatio);
-		int dockHeight = (int) (parentScreenHeight * heightRatio);
-		int dockX = (parentScreenX + parentScreenWidth - dockWidth) / 2;
-		int dockY = (parentScreenY + parentScreenHeight - dockHeight);
+		final int dockWidth = (int) (parentScreenWidth * widthRatio);
+		final int dockHeight = (int) (parentScreenHeight * heightRatio);
+		final int dockX = (parentScreenWidth - dockWidth) / 2;
+		final int dockY = (parentScreenHeight - dockHeight);
 		
 		dock = new GenericWindow(dockX, dockY, dockWidth, dockHeight, "Dock");
 		
@@ -74,7 +74,7 @@ public class Dock {
 		
 		dock.setBackground(dockColor);
 	}
-	
+
 }
 
 class DockElement extends JPanel {
