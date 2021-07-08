@@ -2,6 +2,8 @@ package main;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -69,7 +71,10 @@ public class Main {
 		int screenHeight = 480;
 		
 		if (args.length < 2) {
-			Logger.error("Minimum arguments are not given - Setting as 720x480");
+			Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+			screenWidth = size.width;
+			screenHeight = size.height;
+			Logger.error("Minimum arguments are not given - Setting as hardware size: " + screenWidth + "x" + screenHeight);
 		}else {
 			screenWidth = Integer.parseInt(args[0]);
 			screenHeight = Integer.parseInt(args[1]);
