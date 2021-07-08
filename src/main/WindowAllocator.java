@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
 import data.ViewDimension;
@@ -15,7 +16,7 @@ public class WindowAllocator {
 	private static long lastPid = 0;
 	
 	private static Screen mainScreen;
-	private static Container contentPane;
+	private static JLayeredPane layer;
 	
 	private static ArrayList<Component> innerContents = new ArrayList<>();
 	private static ArrayList<Long> innerContentsPID = new ArrayList<>();
@@ -23,7 +24,10 @@ public class WindowAllocator {
 	
 	public static void createObjects(int x, int y, int screenWidth, int screenHeight) {
 		mainScreen = new Screen(x, y, screenWidth, screenHeight, "HG7Server");
-		contentPane = mainScreen.getContentPane();
+		layer = new JLayeredPane();
+		layer.setBounds(x, y, screenWidth, screenHeight);
+		mainScreen.setLayout(null);
+		mainScreen.add(layer);
 		Logger.info("Created main screen.");
 	}
 	
@@ -33,18 +37,19 @@ public class WindowAllocator {
 	}
 	
 	public static long addWindow(Component window) {
-		return addWindow(window, 100);
+		return addWindow(window, 1);
 	}
 	
 	public static long addWindow(Component window, int index) {
 		Logger.info("Adding new window to View...");
-		mainScreen.layerPane.add(window, index);
-		contentPane.add(window);
+		mainScreen.remove(layer);
+		layer.add(window, Integer.valueOf(index));
 		innerContents.add(window);
 		long newPID = getNewPID();
 		Logger.info("Got PID: " + newPID);
 		innerContentsPID.add(newPID);
-		SwingUtilities.updateComponentTreeUI(mainScreen);
+		mainScreen.add(layer);
+		refresh();
 		Logger.info("mainScreen is updated.");
 		return newPID;
 	}
@@ -62,12 +67,12 @@ public class WindowAllocator {
 	public static void removeWindow(GenericWindow window) {
 		innerContentsPID.remove(innerContents.indexOf(window));
 		innerContents.remove(innerContents.indexOf(window));
-		contentPane.remove(window);
+		layer.remove(window);
 	}
 	
 	public static void removeWindow(long pid) {
 		innerContentsPID.remove(innerContentsPID.indexOf(pid));
-		contentPane.remove(innerContents.get(innerContentsPID.indexOf(pid)));
+		layer.remove(innerContents.get(innerContentsPID.indexOf(pid)));
 		innerContents.remove(innerContentsPID.indexOf(pid));
 	}
 	
@@ -78,7 +83,7 @@ public class WindowAllocator {
 	public static void closeFrame() {
 		innerContents.clear();
 		innerContentsPID.clear();
-		contentPane = null;
+		layer = null;
 		mainScreen.setVisible(false);
 		mainScreen = null;
 	}
