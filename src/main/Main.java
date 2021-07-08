@@ -23,8 +23,17 @@ public class Main {
 	public static String clientHost = "127.0.0.1";
 
 	public static void main(String[] args){
+		
+		Logger.info("HG7 Graphics Framework");
+		Logger.info("++++++++++++++++++++++");
+		Logger.info("HG7 7.0.0 InDev 1");
+		Logger.info("Server integrated.");
+		Logger.info("");
+		
 		try {
 			if (args[0].equals("servermode")) {
+				Logger.info("Running in [SERVER] mode...");
+				Logger.info("");
 				Thread async = new Thread() {
 					public void run() {
 						try {
@@ -38,6 +47,8 @@ public class Main {
 				async.start();
 				SocketIO.serverMode();
 			}else if (args[0].equals("clientmode")) {
+				Logger.info("Running in [CLIENT-UINTERACTIVE] mode...");
+				Logger.info("");
 				SocketIO.clientRealtimeRECV(clientHost);
 				Scanner input = new Scanner(System.in);
 				for(;;) {
@@ -45,6 +56,8 @@ public class Main {
 					SocketIO.clientMode(input.nextLine(), clientHost);
 				}
 			}else if (args[0].equals("clientmode-f-in")) {
+				Logger.info("Running in [CLIENT] mode...");
+				Logger.info("");
 				SocketIO.clientRealtimeRECV(clientHost);
 				if (args.length > 1) {
 					File f = new File(args[1]);
@@ -79,7 +92,6 @@ public class Main {
 			screenWidth = Integer.parseInt(args[0]);
 			screenHeight = Integer.parseInt(args[1]);
 		}
-		
 		
 		
 		Logger.info("Main screen width: " + screenWidth);
