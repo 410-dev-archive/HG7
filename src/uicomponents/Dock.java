@@ -29,15 +29,19 @@ public class Dock {
 	private ArrayList<String> itemExecutionCommand = new ArrayList<>();
 	private ArrayList<DockElement> items = new ArrayList<>();
 	
-	public final String DockItemsDatabaseLocation = "/Users/hoyounsong/Desktop/elements/";
-	public final String ID = DockItemsDatabaseLocation + "id.data";
-	public final String Executions = DockItemsDatabaseLocation + "exec.data";
+	public String DockItemsDatabaseLocation = "/Users/hoyounsong/Desktop/elements/";
+	public String ID = DockItemsDatabaseLocation + "id.data";
+	public String Executions = DockItemsDatabaseLocation + "exec.data";
 	
 	public final Color dockColor = Color.white;
 	
 	public JPanel dock;
 	
-	public Dock(int parentScreenX, int parentScreenY, int parentScreenWidth, int parentScreenHeight) throws Exception {
+	public Dock(int parentScreenX, int parentScreenY, int parentScreenWidth, int parentScreenHeight, String DockItemsDBLocation) throws Exception {
+		
+		DockItemsDatabaseLocation = DockItemsDBLocation;
+		ID = DockItemsDatabaseLocation + "id.data";
+		Executions = DockItemsDatabaseLocation + "exec.data";
 		
 		int dockWidth = (int) (parentScreenWidth * widthRatio);
 		int dockHeight = (int) (parentScreenHeight * heightRatio);
