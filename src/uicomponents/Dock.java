@@ -13,6 +13,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.json.simple.JSONObject;
+
 import IO.FileIO;
 import IO.SocketIO;
 import main.Logger;
@@ -125,10 +127,15 @@ class DockElement extends JPanel {
     	this.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent e) {
     			try {
+    				
+    				JSONObject jsonData = new JSONObject();
+    				jsonData.put("Id", itemID);
+    				jsonData.put("Command", itemExecutionCommand.replace("\n", ""));
+    				
     				Logger.info("[" + itemID + "]@Dock: Clicked. Sending packet to client.");
-    				String packet = "INDEX: Clicked, Command; Clicked: " + itemID + "; Command: {" + itemExecutionCommand + "}";
+    				String packet = jsonData.toString();
     				SocketIO.sendMessageToClient(packet);
-					Logger.info("[" + itemID + "]@Dock: Successfully sent packet to client. Packet: {" + packet + "}");
+					Logger.info("[" + itemID + "]@Dock: Successfully sent packet to client. Packet: " + packet);
 				} catch (Exception e1) {
 					Logger.writeExceptionLog(e1, itemID + " clicked");
 				}
