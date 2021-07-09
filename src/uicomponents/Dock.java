@@ -28,12 +28,10 @@ public class Dock {
 	final float iconRatio = 0.8f;
 	
 	private ArrayList<String> itemID = new ArrayList<>();
-	private ArrayList<String> itemExecutionCommand = new ArrayList<>();
 	private ArrayList<DockElement> items = new ArrayList<>();
 	
 	public String DockItemsDatabaseLocation = "/Users/hoyounsong/Desktop/elements/";
 	public String ID = DockItemsDatabaseLocation + "id.data";
-	public String Executions = DockItemsDatabaseLocation + "exec.data";
 	
 	public final Color dockColor = Color.white;
 	
@@ -43,7 +41,6 @@ public class Dock {
 		
 		DockItemsDatabaseLocation = DockItemsDBLocation;
 		ID = DockItemsDatabaseLocation + "id.data";
-		Executions = DockItemsDatabaseLocation + "exec.data";
 		
 		final int dockWidth = (int) (parentScreenWidth * widthRatio);
 		final int dockHeight = (int) (parentScreenHeight * heightRatio);
@@ -53,17 +50,15 @@ public class Dock {
 		dock = new GenericWindow(dockX, dockY, dockWidth, dockHeight, "Dock");
 		
 		String[] ids = FileIO.readString(ID).split("\n");
-		String[] exec = FileIO.readString(Executions).split("\n");
 		
 		for(int i = 0; i < ids.length; i++) {
 			Logger.info("Adding element: " + ids[i]);
 			itemID.add(ids[i]);
-			itemExecutionCommand.add(exec[i]);
 		}
 		
 		for (int i = 0; i < itemID.size(); i++) {
 			try {
-				DockElement item = new DockElement(itemID.get(i), itemExecutionCommand.get(i), DockItemsDatabaseLocation + "bundles/", (int) (dockHeight * iconRatio), dockColor);
+				DockElement item = new DockElement(itemID.get(i), DockItemsDatabaseLocation + "bundles/", (int) (dockHeight * iconRatio), dockColor);
 				items.add(item);
 			}catch(Exception e) {
 				throw e;
@@ -89,13 +84,13 @@ class DockElement extends JPanel {
 	private String loadFailedIcon = "";
 	private BufferedImage image;
 
-    public DockElement(String id, String executionCommand, String dbLocation, int iconDimension, Color dockBackground) throws Exception {
+    public DockElement(String id, String dbLocation, int iconDimension, Color dockBackground) throws Exception {
     	
     	Logger.info("Adding dock element data...");
     	itemID = id;
     	itemRealPath = dbLocation + id + ".hxgb";
     	itemIconPath = itemRealPath + "/icon.png";
-    	itemExecutionCommand = executionCommand;
+    	itemExecutionCommand = FileIO.readString(itemRealPath + "/exec.data");
     	
     	try {
     		Logger.info("Loading icon: " + itemIconPath);
