@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.json.simple.JSONObject;
+
 import IO.SocketIO;
 import data.AlertData;
 import data.ButtonData;
@@ -45,7 +47,10 @@ public class Alert {
 			button.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
-			        SocketIO.sendMessageToClient("ButtonEvent_" + data.parentID + ":" + buttonData.onClickCommand);
+			    	JSONObject object = new JSONObject();
+			    	object.put("Id", data.parentID);
+			    	object.put("Command", buttonData.onClickCommand);
+			        SocketIO.sendMessageToClient(object.toString());
 			    }
 			});
 			button.setVisible(true);
