@@ -22,8 +22,12 @@ public class ClientSideInterpreter {
 	        
 			if (command.equals("exit")) {
 				Logger.info("RTClient will stop client.");
-				SocketIO.clientMode("exit", Main.clientHost);
+				Logger.info("RTClient will send stop signal to server.");
+				SocketIO.clientMode(command, Main.clientHost);
 				System.exit(0);
+			}else {
+				Logger.error("Server returned unknown command. Sending command back to server.");
+				SocketIO.clientMode(command, Main.clientHost);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
