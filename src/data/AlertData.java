@@ -6,6 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import main.Logger;
+
 public class AlertData {
 	public String title;
 	public String text;
@@ -29,14 +31,18 @@ public class AlertData {
         width = Integer.parseInt((String) innerParser.get("width"));
         height = Integer.parseInt((String) innerParser.get("height"));
         
-        for(int i = 0;;i++) {
+        for(int i = 1;;i++) {
         	try {
         		innerJSON = parentArrayParser.get(i).toString();
         		innerParser = (JSONObject) parser.parse(innerJSON);
         		
+        		Logger.info("Adding button data: " + innerParser.toString());
+        		
         		ButtonData b = new ButtonData();
-        		b.text = innerParser.getOrDefault("buttonText", "Dismiss").toString();
-        		b.onClickCommand = innerParser.getOrDefault("buttonAction", "dismiss").toString();
+        		b.text = (String) innerParser.get("buttonText");
+        		b.onClickCommand = (String) innerParser.get("buttonAction");
+        		
+        		buttons.add(b);
         	}catch(Exception e) {
         		if (e.toString().contains("IndexOutOfBounds")) break;
         	}
