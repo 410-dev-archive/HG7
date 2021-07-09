@@ -23,6 +23,7 @@ import uiobjects.GenericWindow;
 public class Alert {
 	public JPanel alert;
 	public String id;
+	public long winPid;
 	
 	public Alert(AlertData data) {
 		ViewDimension alertDimension = new ViewDimension();
@@ -38,18 +39,21 @@ public class Alert {
 		JLabel titleText = new JLabel();
 		titleText.setText(data.title);
 		
+		winPid = WindowAllocator.getPendingPID();
+		
 		Logger.info("Adding button...");
 		for(ButtonData buttonData : data.buttons) {
 			JButton button = new JButton();
 			Logger.info("Button: " + buttonData.text);
 			Logger.info("Button Action: " + buttonData.onClickCommand);
+			
 			button.setText(buttonData.text);
 			button.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
 			    	JSONObject object = new JSONObject();
 			    	object.put("Id", data.parentID);
-			    	object.put("Command", buttonData.onClickCommand);
+			    	object.put("Command", buttonData.onClickCommand.replace("__windowpid", winPid + ""));
 			        SocketIO.sendMessageToClient(object.toString());
 			    }
 			});
