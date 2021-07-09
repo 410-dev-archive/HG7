@@ -16,6 +16,29 @@ public class AlertData {
 	public int height;
 	public ArrayList<ButtonData> buttons = new ArrayList<>();
 	
+	
+	/* Required properties
+	
+	title				String value that is displayed as title
+	text				String value that is displayed as content
+	parentID			String value of application ID
+	uuid				String value of UUID for individual window
+	width				Integer value of window width
+	height				Integer value of window height
+	
+	[Button Array]
+	
+	*/
+	
+	/* Optional properties
+	 
+	allowMultiWindows		Boolean value that defines if this application ID can have multiple windows
+	doShowWindowTitleBar	Boolean value that defines if this window has title bar
+	allowClose				Boolean value that defines if this window is allowed to close with red closing button
+	
+	 
+	*/
+	
 	public AlertData(String json) throws Exception {
 		
 		JSONParser parser = new JSONParser();
