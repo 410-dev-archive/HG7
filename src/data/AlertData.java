@@ -48,8 +48,4 @@ public class AlertData {
         	}
         }
 	}
-	
-	public static void main(String[] args) throws Exception {
-		AlertData ad = new AlertData("[{\"title\":\"Not Prepared\", \"text\":\"Message\"}, {\"buttonText\":\"ButtonText\", \"buttonAction\":\"EH\"}]");
-	}
 }
