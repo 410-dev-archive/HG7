@@ -55,7 +55,7 @@ public class Main {
 					System.out.print(">> ");
 					SocketIO.clientMode(input.nextLine(), clientHost);
 				}
-			}else if (args[0].equals("clientmode-f-in")) {
+			}else if (args[0].equals("clientmode-fs")) {
 				Logger.info("Running in [CLIENT] mode...");
 				Logger.info("");
 				SocketIO.clientRealtimeRECV(clientHost);
