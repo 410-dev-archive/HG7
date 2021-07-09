@@ -15,6 +15,8 @@ import uiobjects.Screen;
 public class WindowAllocator {
 	private static long lastPid = 0;
 	
+	private static int zIndex = 2;
+	
 	private static Screen mainScreen;
 	private static JLayeredPane layer;
 	
@@ -38,8 +40,12 @@ public class WindowAllocator {
 		return lastPid++;
 	}
 	
+	public static long getPendingPID() {
+		return lastPid;
+	}
+	
 	public static long addWindow(Component window) {
-		return addWindow(window, 1);
+		return addWindow(window, zIndex++);
 	}
 	
 	public static long addWindow(Component window, int index) {
