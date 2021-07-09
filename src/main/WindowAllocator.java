@@ -70,12 +70,14 @@ public class WindowAllocator {
 		innerContentsPID.remove(innerContents.indexOf(window));
 		innerContents.remove(innerContents.indexOf(window));
 		layer.remove(window);
+		refresh();
 	}
 	
 	public static void removeWindow(long pid) {
-		innerContentsPID.remove(innerContentsPID.indexOf(pid));
 		layer.remove(innerContents.get(innerContentsPID.indexOf(pid)));
 		innerContents.remove(innerContentsPID.indexOf(pid));
+		innerContentsPID.remove(pid);
+		refresh();
 	}
 	
 	public static void refresh() {

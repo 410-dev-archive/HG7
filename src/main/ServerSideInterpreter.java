@@ -32,10 +32,23 @@ public class ServerSideInterpreter {
 		}else if (input.startsWith("alert ")) {
 			input = input.replace("alert ", "");
 			return makeAlert(input);
+		}else if (input.startsWith("close ")) {
+			input = input.replace("close ", "");
+			return closeWindow(input);
 		}else if (input.equals("uisvreboot")) {
 			return uiReboot();
 		}else {
 			return "SERVER:INTERPRETER_FAILED";
+		}
+	}
+	
+	private static String closeWindow(String pid) {
+		try {
+			long PID = Long.parseLong(pid);
+			WindowAllocator.removeWindow(PID);
+			return "SERVER:OK";
+		}catch(Exception e) {
+			return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e) + "}";
 		}
 	}
 	
@@ -54,8 +67,8 @@ public class ServerSideInterpreter {
 		try {
 			AlertData alertData = new AlertData(jsonIn);
 			Alert a = new Alert(alertData);
-			WindowAllocator.addWindow(a.alert);
-			return "SERVER:OK";
+			long returnedPID = WindowAllocator.addWindow(a.alert);
+			return "SERVER:OK:" + returnedPID;
 		}catch(Exception e) {
 			return "SERVER:EXCEPTION:{" + Logger.convertStackTraceToString(e).replace("\n", "") + "}";
 		}
