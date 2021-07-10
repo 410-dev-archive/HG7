@@ -11,7 +11,7 @@ import main.Logger;
 
 public class FileIO {
 	
-	
+	// String 값을 파일에서 읽어옴
 	public static String readString(String path) {
 		if (!new File(path).canRead()) return null;
 		
@@ -28,7 +28,7 @@ public class FileIO {
 	    return toReturn;
 	}
 	
-	
+	// 파일에 String 값을 씀 (덮어쓰기). 성공시 true 반환.
 	public static boolean writeString(String path, String content) {
 		File file = new File(path);
 		if (! file.canWrite()) return false;
@@ -42,6 +42,7 @@ public class FileIO {
 		return new File(path).isFile() && content.startsWith(readString(path));
 	}
 	
+	// 파일에 String 값을 덧붙임. 성공시 true 반환.
 	public static boolean appendString(String path, String content) {
 		
 		if (!new File(path).canWrite()) return false;
@@ -55,7 +56,7 @@ public class FileIO {
 		return content.endsWith(readString(path));
 	}
 	
-	
+	// 안전 체크 안하고 파일에 String 값을 덧붙임
 	public static void appendStringNoCheck(String path, String content) throws Exception {
 		if (!new File(path).isFile()) {
 			writeString(path, content);
@@ -66,6 +67,7 @@ public class FileIO {
 		}
 	}
 	
+	// 파일 삭제. 성공시 true 반환.
 	public static boolean deleteFile(String path) {
 		File f = new File(path);
 		if (f.isFile()) {

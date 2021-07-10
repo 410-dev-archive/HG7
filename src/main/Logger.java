@@ -7,18 +7,20 @@ import IO.FileIO;
 
 public class Logger {
 	
-	public static String exceptionLogLocation = "/Users/hoyounsong/elements/exceptions.l";
-	
+	// 제대로 작동 안한는 코드
 	public static void writeExceptionLog(Exception e, String errorLocation) {
 		StringWriter sw = new StringWriter();
 		e.printStackTrace(new PrintWriter(sw));
 		String exceptionStackTrace = sw.toString();
 		
-		try {
-			FileIO.appendStringNoCheck(exceptionLogLocation, exceptionStackTrace);
-		}catch(Exception ee) {
-			ee.printStackTrace();
-		}
+		// try {
+		//  String exceptionLogLocation = "/Users/hoyounsong/elements/exceptions.l";
+		// 	FileIO.appendStringNoCheck(exceptionLogLocation, exceptionStackTrace);
+		// }catch(Exception ee) {
+		// 	ee.printStackTrace();
+		// }
+
+		error(exceptionStackTrace);
 	}
 	
 	public static void info(String s) {
@@ -33,6 +35,7 @@ public class Logger {
 		System.out.println("[-] " + e);
 	}
 	
+	// Exception e 의 스택트레이스를 String 값으로 변환
 	public static String convertStackTraceToString(Exception e) {
 		StringWriter sw = new StringWriter();
 		e.printStackTrace(new PrintWriter(sw));

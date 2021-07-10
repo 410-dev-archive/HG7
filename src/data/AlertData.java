@@ -16,6 +16,9 @@ public class AlertData {
 	public int height;
 	public ArrayList<ButtonData> buttons = new ArrayList<>();
 	
+
+	// JSON Example:
+	// [{"title":"", "text":"", "parentID":"", "uuid":"", "width":"", "height":""}, {"buttonText":"", "buttonAction":""}, {"buttonText":"", "buttonAction":""}]
 	
 	/* Required properties
 	
