@@ -21,7 +21,7 @@ import uiobjects.Screen;
 public class Main {
 	
 	public static String clientHost = "127.0.0.1"; // All communications are done locally
-
+	
 	// 시작 메인 메서드 - 시작 모드 결정을 위해 커맨드라인 argument 를 받음
 	// 사용 가능한 arguments: servermode, clientmode, clientmode-fs [통신용 파일 위치]
 	public static void main(String[] args){
@@ -36,6 +36,8 @@ public class Main {
 			
 			// 서버 모드로 시작하기
 			if (args[0].equals("servermode")) {
+				
+				Logger.running = "SERVER";
 				Logger.info("Running in [SERVER] mode...");
 				Logger.info("");
 
@@ -60,6 +62,7 @@ public class Main {
 			// Scanner 를 이용하는 클라이언트 모드로 시작하기
 			// !!! 중요 !!! 명령어를 입력한 후 전송하기 전까지 수신 서버에 연결하지 않음.
 			}else if (args[0].equals("clientmode")) {
+				Logger.running = "CLIENT";
 				Logger.info("Running in [CLIENT-UINTERACTIVE] mode...");
 				Logger.info("");
 
@@ -79,6 +82,7 @@ public class Main {
 			// 일반 파일을 통해 시스템 (서버 아님) 과 클라이언트 통신 방식
 				// 예: bash 에서 echo "명령어" > "통신파일"
 			}else if (args[0].equals("clientmode-fs")) {
+				Logger.running = "CLIENT_FS";
 				Logger.info("Running in [CLIENT] mode...");
 				Logger.info("");
 
@@ -94,7 +98,9 @@ public class Main {
 							String[] commands = readFile.split("\n"); // linebreak 를 기준으로 나눈 후
 							for(String command : commands) // 각 줄을 서버로 전송하기
 								SocketIO.clientMode(command, clientHost);
+							f.delete(); // 서버로 명령 전송 완료시 통신 파일 삭제
 						}
+						Thread.sleep(100);
 					}
 				}
 			}

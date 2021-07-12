@@ -88,10 +88,13 @@ public class SocketIO {
 
             // 수신이 활성화 되어있을때
             while (!shouldClose) {
+            	Thread.sleep(100);
 
             	// 만약 RTSend 값이 "" 가 아니라면 송신 프로세스 시작
                 if (!RTSend.equals("")) {
-
+                	
+                	Logger.info("RTServer response: Sending");
+                	
                 	// 송신 객체 생성
                 	OutputStream out = socketUser.getOutputStream();
                 	PrintWriter writer = new PrintWriter(out, true);
@@ -103,6 +106,7 @@ public class SocketIO {
             }
         }
         serverSocket.close();
+        Logger.info("RTServer closed.");
 	}
 	
 	// 동기식 클라이언트
@@ -130,6 +134,8 @@ public class SocketIO {
 		
 		// 소켓 종료
 		socket.close();
+		
+		Logger.info("Response processed.");
 	}
 	
 	// 비동기식 RTClient
@@ -146,6 +152,7 @@ public class SocketIO {
 
 					// 무한반복
 					while(true) {
+						Logger.info("Waiting for signal...");
 
 						// 서버로부터 데이터를 수신
 						InputStream input = socket.getInputStream();
@@ -171,6 +178,7 @@ public class SocketIO {
 
 					// Exception log 작성
 					Logger.writeExceptionLog(e, "RTRECV Thread");
+					Logger.error("Exception: " + Logger.convertStackTraceToString(e));
 				}
 			}
 		};

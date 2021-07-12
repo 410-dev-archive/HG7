@@ -7,6 +7,8 @@ import IO.FileIO;
 
 public class Logger {
 	
+	public static String running = "";
+	
 	// 제대로 작동 안한는 코드
 	public static void writeExceptionLog(Exception e, String errorLocation) {
 		StringWriter sw = new StringWriter();
@@ -24,15 +26,15 @@ public class Logger {
 	}
 	
 	public static void info(String s) {
-		System.out.println("[*] " + s);
+		System.out.println("[*] [" + running + "] " + s);
 	}
 	
 	public static void warn(String w) {
-		System.out.println("[!] " + w);
+		System.out.println("[!] [" + running + "] " + w);
 	}
 	
 	public static void error(String e) {
-		System.out.println("[-] " + e);
+		System.out.println("[-] [" + running + "] " + e);
 	}
 	
 	// Exception e 의 스택트레이스를 String 값으로 변환

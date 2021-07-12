@@ -8,7 +8,7 @@ import IO.SocketIO;
 public class ClientSideInterpreter {
 	// Interprets the data responded from server after client sent signal
 	public static void responseInterpreter(String data) {
-		
+		return;
 	}
 	
 	// Interprets the data dispatched from RTServer
@@ -34,8 +34,11 @@ public class ClientSideInterpreter {
 				Logger.error("Server requested unknown command. Sending command back to server.");
 				SocketIO.clientMode(command, Main.clientHost); // 서버로 전송
 			}
+			
+			Logger.info("Interpretation OK");
 		}catch(Exception e) {
 			e.printStackTrace();
+			Logger.error(Logger.convertStackTraceToString(e));
 		}
 	}
 }
