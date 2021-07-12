@@ -94,28 +94,35 @@ class DockElement extends JPanel {
 	
 	// 엘리멘트 데이터
 	private final String itemID;
-	private final String itemIconPath;
-	private final String itemExecutionCommand;
-	private final String itemRealPath;
+	private final String itemIconPath; // 아이콘 위치
+	private final String itemExecutionCommand; // 아이콘을 눌렀을때 클라이언트로 전송될 명령
+	private final String itemRealPath; // 엘리멘트 번들 위치
 	
-
+	// 아이콘 로드 실패시 (아이콘 파일이 없을 경우) 대체할 이미지 파일
 	private String loadFailedIcon = "";
-	private BufferedImage image;
+	private BufferedImage image; // 아이콘 이미지
 
+	// 생성자
+	// 받는 패러미터 - 엘리멘트 식별 아이디, 실제 번들 위치, 아이콘 가로세로 크기, Dock 배경색
     public DockElement(String id, String dbLocation, int iconDimension, Color dockBackground) throws Exception {
     	
+    	// 객체 전역변수에 추가
     	Logger.info("Adding dock element data...");
     	itemID = id;
     	itemRealPath = dbLocation + id + ".hxgb";
     	itemIconPath = itemRealPath + "/icon.png";
-    	itemExecutionCommand = FileIO.readString(itemRealPath + "/exec.data");
+    	itemExecutionCommand = FileIO.readString(itemRealPath + "/exec.data"); // exec.data 파일에서 실행 명령 텍스트를 불러옴
     	
     	try {
     		Logger.info("Loading icon: " + itemIconPath);
-    	    image = ImageIO.read(new File(itemIconPath));
+    	    image = ImageIO.read(new File(itemIconPath)); // 아이콘 설정
     	} catch (Exception ex) {
+
+    		// 아이콘 설정 실패시
     		Logger.error("Failed loading icon: ");
     		ex.printStackTrace();
+
+    		// 더미 아이콘 로드
     		try {
     			Logger.info("Loading dummy icon: " + loadFailedIcon);
     			image = ImageIO.read(new File(loadFailedIcon));
@@ -126,25 +133,37 @@ class DockElement extends JPanel {
     			throw e;
     		}
     	}
+
+    	// 아이콘을 Swing 컴포넌트로 변형
     	ImageIcon imicon = new ImageIcon(image);
     	Image img = imicon.getImage();
     	img = img.getScaledInstance(iconDimension, iconDimension, Image.SCALE_SMOOTH);
     	JLabel icon = new JLabel(new ImageIcon(img));
     	icon.setBackground(dockBackground);
+
+    	// 아이콘 크기 조절
     	Logger.info("Icon size: " + iconDimension);
     	icon.setSize(iconDimension, iconDimension);
+
+    	// 이 Dock 엘리멘트에 아이콘 올림
     	this.add(icon);
     	Logger.info("Icon loaded.");
+
+    	// 배경색을 Dock 이랑 통일
     	this.setBackground(dockBackground);
     	this.repaint();
+
+    	// 클릭시 실행할 명령
     	this.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent e) {
     			try {
     				
+    				// Id 와 Command 키를 JSON 으로 묶음
     				JSONObject jsonData = new JSONObject();
     				jsonData.put("Id", itemID);
     				jsonData.put("Command", itemExecutionCommand.replace("\n", ""));
     				
+    				// RTServer 를 통해 클라이언트로 전송
     				Logger.info("[" + itemID + "]@Dock: Clicked. Sending packet to client.");
     				String packet = jsonData.toString();
     				SocketIO.sendMessageToClient(packet);
