@@ -1,5 +1,8 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -30,6 +33,31 @@ public class ClientSideInterpreter {
 				// 서버로 종료 명령 전송
 				SocketIO.clientMode(command, Main.clientHost);
 				System.exit(0);
+			
+			// 셸 명령어를 처리하는 명령
+			}else if (command.startsWith("<exec> ")) {
+				
+				// 명령어 분리
+				command = command.substring("<exec> ".length());
+				Logger.info("RTClient will execute shell script: " + command);
+				
+				// 셸 명령 실행
+				Runtime run = Runtime.getRuntime();
+				Process pr = run.exec(command);
+				pr.waitFor();
+				
+				// 명령 실행 이후 출력값을 받아옴
+				BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+				String line = "";
+				String tmpLine = "";
+				while ((tmpLine=buf.readLine())!=null) {
+					line += tmpLine + "<linebreak>";
+				}
+				
+				Logger.info("Shell returned: " + line);
+				
+				// 서버로 전송
+				SocketIO.clientMode(line, Main.clientHost);
 			}else { // 서버 요청을 이해하지 못했을 때 수신된 명령을 다시 서버로 반환 (프론트엔드 처리 명령일 가능성이 큼)
 				Logger.error("Server requested unknown command. Sending command back to server.");
 				SocketIO.clientMode(command, Main.clientHost); // 서버로 전송
